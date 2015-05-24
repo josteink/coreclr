@@ -48,7 +48,7 @@ int __cdecl main( int argc, char **argv )
       internal structures
     */
     Sleep(100);
-  
+
     /* 
      * Check that Queueing an APC in the middle of a sleep does interrupt
      * it, if it's in an alertable state.
@@ -60,6 +60,9 @@ int __cdecl main( int argc, char **argv )
 	dwAvgDelta += ThreadSleepDelta - InterruptTime;
     }
     dwAvgDelta /= Iterations;
+    Trace("Expected thread to sleep for %d ms (and get interrupted).\n"
+	 "Average delta: %u ms,  acceptable delta: %u\n", 
+	 InterruptTime, dwAvgDelta, AcceptableDelta);
 
     if (dwAvgDelta > AcceptableDelta)
     {
@@ -80,6 +83,9 @@ int __cdecl main( int argc, char **argv )
     }
     dwAvgDelta /= Iterations;
 
+    Trace("Expected thread to sleep for %d ms (and not get interrupted).\n"
+	  "Average delta: %u ms,  acceptable delta: %u\n", 
+	  InterruptTime, dwAvgDelta, AcceptableDelta);
     if (dwAvgDelta > AcceptableDelta)
     {
         Fail("Expected thread to sleep for %d ms (and not be interrupted).\n"
